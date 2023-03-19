@@ -1,16 +1,38 @@
-// construindo a função para ser usada 
-function playSoundPom(){
-    document.querySelector('#som_tecla_pom').play();
+// id => a cada item do array, sendo colocado do lugar do id, ou seja .classes ou #id dentro do html
+function playSound(seletorAudio) {
+    const elemento = document.querySelector(seletorAudio);
+
+    if (elemento && elemento.localName === 'audio') {
+        elemento.play();
+    }
+    else {
+        console.log('Elemento não encontrado ou seletor inválido');
+    }
+
 }
 
-// construindo a array
-const keysList = document.querySelectorAll('.tecla')
+const listaDeTeclas = document.querySelectorAll('.tecla');
 
-// construindo um variavel dinamica para o contador 
-let counter = 0 
+for (let contador = 0; contador < listaDeTeclas.length; contador++) {
 
-while(counter < keysList.length){
-    keysList[counter].onclick = playSoundPom
-    counter++ 
-    console.log(counter)
+    const tecla = listaDeTeclas[contador];
+    const instrumento = tecla.classList[1];
+    const idAudio = `#som_${instrumento}`; //template string
+
+    tecla.onclick = function () {
+        playSound(idAudio);
+    }
+
+    tecla.onkeydown = function (evento) {
+
+        if (evento.code === 'Space' || evento.code === 'Enter') {
+            tecla.classList.add('ativa');
+        }
+
+    }
+
+    tecla.onkeyup = function () {
+        tecla.classList.remove('ativa');
+    }
+
 }
